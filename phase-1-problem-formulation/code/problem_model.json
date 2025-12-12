@@ -1,0 +1,15 @@
+{
+  "variables": "x_i ∈ {0,1} representing selection of backend i",
+  "objective": "Minimize w1*queue + w2*error + w3*downtime - w4*qubits",
+  "constraint": "Sum(x_i) = 1",
+  "inputs": [
+    "queue_length",
+    "error_rate",
+    "downtime_probability",
+    "num_qubits",
+    "t1_values",
+    "t2_values",
+    "calibration_metrics"
+  ],
+  "phase": "Phase 1 — Problem Formulation"
+}
