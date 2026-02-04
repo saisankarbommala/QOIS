@@ -17,7 +17,7 @@ import {
 
   getBackendsList// Endpoint to retrieve results from MongoDB
   // We remove 'deleteJob' because it was not implemented/exported.
-} from '../controllers/jobcontroller.js'; 
+} from '../controllers/jobController.js'; 
 
 // --- Protected Job Endpoints (Requires Authentication) ---
 
