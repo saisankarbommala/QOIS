@@ -2,13 +2,13 @@
 import axios from "axios";
 
 // --------------------------------------------------
-// DYNAMIC API BASE URL
+// API BASE URL (AUTO SWITCH DEV / PROD)
 // --------------------------------------------------
-// This checks if the app is running in production (Netlify) or local dev.
-// It prioritizes the VITE_API_URL variable from your Netlify dashboard.
-const API_BASE_URL = import.meta.env.PROD 
-  ? (import.meta.env.VITE_API_URL || "https://qois.onrender.com/api")
-  : "http://localhost:5000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+// Optional Debug (Remove after testing)
+console.log("🌐 API BASE URL:", API_BASE_URL);
 
 // --------------------------------------------------
 // AXIOS INSTANCE
@@ -23,14 +23,16 @@ const api = axios.create({
 // --------------------------------------------------
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
 // --------------------------------------------------
-// ERROR HANDLER
+// ERROR HELPER
 // --------------------------------------------------
 const getErrorMessage = (error) => {
   if (error.response?.data?.error) return error.response.data.error;
@@ -39,11 +41,11 @@ const getErrorMessage = (error) => {
 };
 
 // ==================================================
-// SIGNUP
+// SIGNUP OTP
 // ==================================================
 export const signupSendOtp = async ({ name, email }) => {
   try {
-    const res = await api.post("/auth/signup/send-otp", { email, name });
+    const res = await api.post("/auth/signup/send-otp", { name, email });
     return res.data;
   } catch (err) {
     throw new Error(getErrorMessage(err));
@@ -59,7 +61,6 @@ export const signupVerifyOtp = async ({ name, email, otp, password }) => {
       password,
     });
 
-    // ⭐ STORE TOKEN
     localStorage.setItem("token", res.data.token);
     return res.data;
   } catch (err) {
@@ -73,6 +74,7 @@ export const signupVerifyOtp = async ({ name, email, otp, password }) => {
 export const loginWithPassword = async ({ email, password }) => {
   try {
     const res = await api.post("/auth/login/password", { email, password });
+
     localStorage.setItem("token", res.data.token);
     return res.data;
   } catch (err) {
@@ -95,6 +97,7 @@ export const loginSendOtp = async ({ email }) => {
 export const loginVerifyOtp = async ({ email, otp }) => {
   try {
     const res = await api.post("/auth/login/verify-otp", { email, otp });
+
     localStorage.setItem("token", res.data.token);
     return res.data;
   } catch (err) {
@@ -105,11 +108,10 @@ export const loginVerifyOtp = async ({ email, otp }) => {
 // ==================================================
 // GOOGLE LOGIN
 // ==================================================
-// This now dynamically points to Render when on Netlify
 export const getGoogleAuthUrl = () => `${API_BASE_URL}/auth/google`;
 
 // ==================================================
-// GET LOGGED USER (VERY IMPORTANT FOR NAVBAR)
+// GET CURRENT USER
 // ==================================================
 export const getCurrentUser = async () => {
   try {
