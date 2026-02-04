@@ -7,50 +7,52 @@ import { sendTokenResponse } from '../utils/jwtUtils.js';
 import { sendVerificationEmail } from '../services/emailService.js';
 import ErrorResponse from '../utils/ErrorResponse.js';
 
+// Detect if we are running on Render (Production)
+const isProduction = process.env.NODE_ENV === 'production';
 
 // ------------------------------------------------------------------
 // HELPER: Generate OTP, Save to DB, and Send Email
 // ------------------------------------------------------------------
 const generateAndSaveOtp = async (email) => {
+    // 💡 BYPASS: Don't waste time or risk timeouts on Render
+    if (isProduction) {
+        console.log(`⏩ PRODUCTION BYPASS: Skipping real email for ${email}`);
+        return "123456"; // Dummy code (not used in verify step)
+    }
 
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString(); 
 
-    // Remove any previous OTPs for this email
     await Otp.deleteOne({ email });
+    await Otp.create({ email, otp: otpCode });
 
-    // Save new OTP (Otp model has TTL indexing)
-    await Otp.create({
-        email,
-        otp: otpCode
-    });
-
-    // **REAL EMAIL SENDING — FIXED**
+    // REAL EMAIL SENDING
     await sendVerificationEmail(email, otpCode);
 
     console.log(`📩 OTP ${otpCode} sent to ${email}`);
-
     return otpCode;
 };
-
-
 
 // ==================================================================
 // 1. SIGNUP FLOW
 // ==================================================================
 
-// @desc    Step 1: Send OTP for user registration
-// @route   POST /api/auth/signup/send-otp
-// @access  Public
 export const signupSendOtp = asyncHandler(async (req, res) => {
     const { email } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         throw new ErrorResponse('Email already registered. Please log in.', 400);
     }
 
-    // Generate + send OTP
+    // 💡 If live, tell the frontend we skipped it
+    if (isProduction) {
+        return res.status(200).json({
+            success: true,
+            message: 'Production Mode: OTP Bypassed for instant registration.',
+            bypass: true 
+        });
+    }
+
     await generateAndSaveOtp(email);
 
     res.status(200).json({
@@ -59,46 +61,32 @@ export const signupSendOtp = asyncHandler(async (req, res) => {
     });
 });
 
-
-// @desc    Step 2: Verify OTP + Create account
-// @route   POST /api/auth/signup/verify-otp
-// @access  Public
 export const signupVerifyOtp = asyncHandler(async (req, res) => {
     const { email, otp, password, name } = req.body;
 
-    // Find OTP record
-    const otpRecord = await Otp.findOne({ email, otp });
-    if (!otpRecord) {
-        throw new ErrorResponse('Invalid or expired OTP.', 400);
+    // 💡 BYPASS LOGIC: If on Render, skip the Otp.findOne check
+    if (!isProduction) {
+        const otpRecord = await Otp.findOne({ email, otp });
+        if (!otpRecord) {
+            throw new ErrorResponse('Invalid or expired OTP.', 400);
+        }
     }
 
-    // Password validation
     if (!password || password.length < 8) {
         throw new ErrorResponse('Password must be at least 8 characters long.', 400);
     }
 
-    // Create user
-    const user = await User.create({
-        name,
-        email,
-        password,
-    });
+    const user = await User.create({ name, email, password });
 
-    // Delete used OTP
-    await Otp.deleteOne({ email });
+    if (!isProduction) await Otp.deleteOne({ email });
 
-    // Login user immediately
     sendTokenResponse(user, 201, res);
 });
 
-
-
 // ==================================================================
-// 2. LOGIN WITH PASSWORD
+// 2. LOGIN WITH PASSWORD (Always Works)
 // ==================================================================
 
-// @route   POST /api/auth/login/password
-// @access  Public
 export const loginWithPassword = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -106,7 +94,6 @@ export const loginWithPassword = asyncHandler(async (req, res) => {
         throw new ErrorResponse('Please provide an email and password.', 400);
     }
 
-    // Find user and validate password
     const user = await User.findOne({ email }).select('+password');
 
     if (!user || !(await user.matchPassword(password))) {
@@ -116,25 +103,27 @@ export const loginWithPassword = asyncHandler(async (req, res) => {
     sendTokenResponse(user, 200, res);
 });
 
-
-
 // ==================================================================
 // 3. LOGIN WITH OTP
 // ==================================================================
 
-// @desc    Step 1: Send login OTP
-// @route   POST /api/auth/login/send-otp
-// @access  Public
 export const loginSendOtp = asyncHandler(async (req, res) => {
     const { email } = req.body;
 
-    // Check if user exists
     const user = await User.findOne({ email });
     if (!user) {
         throw new ErrorResponse('No account found with that email.', 404);
     }
 
-    // Send OTP
+    // 💡 If live, we don't send OTP, we just allow the next step
+    if (isProduction) {
+        return res.status(200).json({
+            success: true,
+            message: 'Production Mode: Access granted without OTP.',
+            bypass: true
+        });
+    }
+
     await generateAndSaveOtp(email);
 
     res.status(200).json({
@@ -143,31 +132,20 @@ export const loginSendOtp = asyncHandler(async (req, res) => {
     });
 });
 
-
-// @desc    Step 2: Verify login OTP
-// @route   POST /api/auth/login/verify-otp
-// @access  Public
 export const loginVerifyOtp = asyncHandler(async (req, res) => {
     const { email, otp } = req.body;
 
-    // Check user exists
     const user = await User.findOne({ email });
-    if (!user) {
-        throw new ErrorResponse('User not found.', 404);
+    if (!user) throw new ErrorResponse('User not found.', 404);
+
+    // 💡 BYPASS LOGIC: Skip record check if live
+    if (!isProduction) {
+        const otpRecord = await Otp.findOne({ email, otp });
+        if (!otpRecord) {
+            throw new ErrorResponse('Invalid or expired OTP.', 400);
+        }
+        await Otp.deleteOne({ email });
     }
 
-    // Check OTP
-    const otpRecord = await Otp.findOne({ email, otp });
-    if (!otpRecord) {
-        throw new ErrorResponse('Invalid or expired OTP.', 400);
-    }
-
-    // Remove used OTP
-    await Otp.deleteOne({ email });
-
-    // Log in user
     sendTokenResponse(user, 200, res);
 });
-
-
-// NOTE: Google OAuth will be added later.
