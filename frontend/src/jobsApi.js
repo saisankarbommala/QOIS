@@ -1,62 +1,36 @@
 // src/jobsApi.js
 
-// --------------------------------------------------
-// API BASE URL (AUTO DEV / PROD)
-// --------------------------------------------------
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+// -------------------------------
+// API BASE URL
+// -------------------------------
+const API_BASE_URL = "https://qois.onrender.com/api";
 
-// Optional Debug (Remove later)
-console.log("🌐 Jobs API URL:", API_BASE_URL);
-
-// --------------------------------------------------
+// -------------------------------
 // AUTH HEADERS
-// --------------------------------------------------
+// -------------------------------
 const authHeaders = () => {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
-// --------------------------------------------------
-// GENERIC FETCH WRAPPER
-// --------------------------------------------------
-const apiRequest = async (endpoint, options = {}) => {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20000); // 20 sec timeout
-
+// -------------------------------
+// UNIFIED JSON HANDLER
+// -------------------------------
+const handleJsonResponse = async (res) => {
+  let data;
   try {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...authHeaders(),
-        ...options.headers,
-      },
-      signal: controller.signal,
-      ...options,
-    });
-
-    let data;
-    try {
-      data = await res.json();
-    } catch {
-      throw new Error("Unexpected server response.");
-    }
-
-    if (!res.ok || data?.success === false) {
-      throw new Error(
-        data?.error || data?.message || `Request failed (${res.status})`
-      );
-    }
-
-    return data;
-  } catch (err) {
-    if (err.name === "AbortError") {
-      throw new Error("Request timeout. Server took too long to respond.");
-    }
-    throw err;
-  } finally {
-    clearTimeout(timeout);
+    data = await res.json();
+  } catch {
+    throw new Error("Unexpected server response.");
   }
+
+  if (!res.ok || data?.success === false) {
+    throw new Error(
+      data?.error || data?.message || `Request failed with ${res.status}`
+    );
+  }
+
+  return data;
 };
 
 // ---------------------------------------------------------
@@ -79,49 +53,79 @@ export async function fetchBackends() {
   if (Array.isArray(json.data)) return json.data;
   return [];
 }
+
 // ---------------------------------------------------------
-// 2. Create Job
+// 2. Create Job (POST /jobs)
 // ---------------------------------------------------------
 export async function createJob(payload) {
-  const json = await apiRequest("/jobs", {
+  const res = await fetch(`${API_BASE_URL}/jobs`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
     body: JSON.stringify(payload),
   });
-
+  const json = await handleJsonResponse(res);
   return json.data;
 }
 
 // ---------------------------------------------------------
-// 3. Get Job By ID
+// 3. Get Job By ID (GET /jobs/:id)
 // ---------------------------------------------------------
 export async function getJobById(jobId) {
-  const json = await apiRequest(`/jobs/${jobId}`);
+  const res = await fetch(`${API_BASE_URL}/jobs/${jobId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+  });
+  const json = await handleJsonResponse(res);
   return json.data;
 }
 
 // ---------------------------------------------------------
-// 4. Submit Job to IBM
+// 4. Submit Job to IBM (POST /jobs/:id/submit)
 // ---------------------------------------------------------
 export async function submitJobToIbm(jobId) {
-  const json = await apiRequest(`/jobs/${jobId}/submit`, {
+  const res = await fetch(`${API_BASE_URL}/jobs/${jobId}/submit`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
   });
-
+  const json = await handleJsonResponse(res);
   return json.data;
 }
 
 // ---------------------------------------------------------
-// 5. Get Job Status
+// 5. Get Job Status (GET /jobs/:id/status)
 // ---------------------------------------------------------
 export async function getJobStatus(jobId) {
-  const json = await apiRequest(`/jobs/${jobId}/status`);
+  const res = await fetch(`${API_BASE_URL}/jobs/${jobId}/status`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+  });
+  const json = await handleJsonResponse(res);
   return json.data;
 }
 
 // ---------------------------------------------------------
-// 6. Get Job Results
+// 6. Get Job Results (GET /jobs/:id/results)
 // ---------------------------------------------------------
 export async function getJobResults(jobId) {
-  const json = await apiRequest(`/jobs/${jobId}/results`);
+  const res = await fetch(`${API_BASE_URL}/jobs/${jobId}/results`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(),
+    },
+  });
+  const json = await handleJsonResponse(res);
   return json.data;
 }
