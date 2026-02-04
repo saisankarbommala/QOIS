@@ -57,7 +57,7 @@ import './config/passport.js';
 
 // A. CORS Middleware
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000', // Use localhost:3000 as fallback
+    origin: process.env.FRONTEND_URL || ''http://localhost:4173'', // Use localhost:3000 as fallback
     credentials: true
 }));
 
