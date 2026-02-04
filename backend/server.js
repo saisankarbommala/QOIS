@@ -44,6 +44,7 @@ import './config/passport.js';
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:4173',
+    'https://qops.netlify.app',
     process.env.FRONTEND_URL
 ];
 
