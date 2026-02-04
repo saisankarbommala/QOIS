@@ -119,7 +119,8 @@ const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
     console.log(`\n🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-    console.log(`Backend URL: http://localhost:${PORT}\n`);
+    console.log(`Backend URL: ${process.env.BE_BASE_URL || `http://localhost:${PORT}`}`);
+
 
     // Start Worker 
     if (process.env.RUN_WORKER === 'true' || process.env.NODE_ENV === 'development') {
