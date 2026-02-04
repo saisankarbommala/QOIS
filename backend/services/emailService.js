@@ -1,34 +1,42 @@
 import dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
+dotenv.config(); // Removed path for cleaner environment loading on Render
 
 import nodemailer from 'nodemailer';
 import asyncHandler from '../middleware/asyncHandler.js';
-import crypto from 'crypto'; // For generating unique request IDs
+import crypto from 'crypto';
 
+// --------------------------------------------------------
+// 🛠️ CLOUD-READY TRANSPORTER (Optimized for Render)
+// --------------------------------------------------------
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false,
+    host: 'smtp.gmail.com', // Explicit host is often more reliable
+    port: 465,              // Use SSL Port 465 for production/cloud
+    secure: true,           // Must be true for 465
     auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        pass: process.env.SMTP_PASS, // MUST be a 16-character App Password
     },
-    logger: false, // Set to false in production to keep logs clean
-    debug: false,
+    tls: {
+        // This is the CRITICAL fix for Render timeouts
+        rejectUnauthorized: false 
+    },
+    connectionTimeout: 20000, // Wait 20s for cloud network handshakes
+    greetingTimeout: 15000,
+    socketTimeout: 30000
 });
 
+// Verify connection on startup
 transporter.verify((err, success) => {
     if (err) {
-        console.error("❌ SMTP VERIFY ERROR:", err.message);
+        console.error("❌ SMTP VERIFY ERROR (Cloud Handshake Failed):", err.message);
     } else {
-        console.log("✔ SMTP READY: Quantum Secure Tunnel Established");
+        console.log("✔ SMTP READY: Quantum Secure Tunnel Established on Port 465");
     }
 });
 
 export const sendVerificationEmail = asyncHandler(async (email, otp) => {
     console.log(`📤 Dispatching Quantum Authentication Key to ${email}...`);
 
-    // Generate a unique tracking ID for a professional touch
     const requestId = crypto.randomBytes(3).toString('hex').toUpperCase();
 
     const htmlContent = `
@@ -92,10 +100,10 @@ export const sendVerificationEmail = asyncHandler(async (email, otp) => {
     </html>`;
 
     const mailOptions = {
-        from: `"${process.env.FROM_NAME}" <${process.env.FROM_EMAIL}>`,
+        from: `"${process.env.FROM_NAME || 'Quantum System'}" <${process.env.SMTP_USER}>`,
         to: email,
         subject: `[SECURE] Verification Code: ${otp}`,
-        text: `Your Quantum Verification Code is: ${otp} (Request ID: QS-${requestId})`, // Fallback for simple devices
+        text: `Your Quantum Verification Code is: ${otp} (Request ID: QS-${requestId})`,
         html: htmlContent,
     };
 
