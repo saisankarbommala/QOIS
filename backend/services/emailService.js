@@ -11,7 +11,7 @@ import crypto from 'crypto';
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465, // Using SSL port 465 is the most reliable for Render
-    secure: true, 
+    secure: false, 
     pool: true,   // Keeps the connection open to avoid repeated handshakes
     auth: {
         user: process.env.SMTP_USER,
