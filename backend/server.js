@@ -1,54 +1,34 @@
 // server.js
-// --------------------------------------------------------
-// 1. Load Environment Variables BEFORE anything else
-// --------------------------------------------------------
 import dotenv from 'dotenv';
-dotenv.config(); // Render injects these automatically
+dotenv.config(); 
 
-// --------------------------------------------------------
-// 2. Core Imports
-// --------------------------------------------------------
 import express from 'express';
 import http from 'http';
+import cors from 'cors';
+import session from 'express-session';
+import MongoStore from 'connect-mongo'; // CRITICAL: This requires npm install
+import passport from 'passport';
+
 import connectDB from './config/db.js';
 import { initializeSocketIO } from './utils/socket.js';
 import { startWorker } from './services/jobWorker.js';
-
-// --------------------------------------------------------
-// 3. Security & Session Imports
-// --------------------------------------------------------
-import cors from 'cors';
-import errorHandler from './middleware/errorHandler.js';
-import passport from 'passport';
-import session from 'express-session';
-import MongoStore from 'connect-mongo'; // FIX: Resolves MemoryStore warning
-
-// --------------------------------------------------------
-// 4. Route Imports
-// --------------------------------------------------------
 import authRoutes from './routes/authRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 import backendRoutes from './routes/backendRoutes.js';
+import errorHandler from './middleware/errorHandler.js';
 
 const app = express();
 const server = http.createServer(app);
 
-// --------------------------------------------------------
-// 5. Database Connection
-// --------------------------------------------------------
 connectDB();
 
-import './config/passport.js';
+import './config/passport.js'; 
 
-// --------------------------------------------------------
-// 6. Global Middleware Setup
-// --------------------------------------------------------
-
-// A. FIXED CORS: Allows local dev, local preview, and live site
+// 💡 CORS: Allow Dev (5173), Preview (4173), and Live Netlify
 const allowedOrigins = [
-    'http://localhost:5173', // Vite Dev
-    'http://localhost:4173', // Vite Preview (Fixes your console error)
-    process.env.FRONTEND_URL  // Your Live Netlify URL
+    'http://localhost:5173',
+    'http://localhost:4173',
+    process.env.FRONTEND_URL
 ];
 
 app.use(cors({
@@ -65,51 +45,40 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// B. PRODUCTION SESSION SETUP
+// 💡 SESSION: Using MongoStore to fix MemoryStore warning & Render crashes
 app.use(session({
-    name: 'quantum_session_id',
+    name: 'quantum_session_id', 
     secret: process.env.JWT_SECRET || 'agri_fallback_secret',
-    resave: false,
-    saveUninitialized: false,
+    resave: false, 
+    saveUninitialized: false, 
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI, // Uses your connected Atlas DB
+        mongoUrl: process.env.MONGO_URI,
         collectionName: 'sessions'
     }),
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24, // 24 hours
-        secure: process.env.NODE_ENV === 'production', // true for HTTPS on Render
+    cookie: { 
+        maxAge: 1000 * 60 * 60 * 24,
+        secure: process.env.NODE_ENV === 'production', 
         httpOnly: true,
-        sameSite: 'none' // Required for cross-site cookies between Netlify & Render
+        sameSite: 'none' 
     }
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.session()); 
 
-// --------------------------------------------------------
-// 7. Initialization & Routes
-// --------------------------------------------------------
 initializeSocketIO(server);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/backends', backendRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Quantum Job Tracker API is running!');
-});
+app.get('/', (req, res) => res.send('Quantum Job Tracker API is running!'));
 
 app.use(errorHandler);
 
-// --------------------------------------------------------
-// 8. Start Server
-// --------------------------------------------------------
 const PORT = process.env.PORT || 5000;
-
 server.listen(PORT, () => {
-    console.log(`\n🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-    
-    // Bypass Logic: Worker starts normally, but auth handles production checks
+    console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
     if (process.env.RUN_WORKER === 'true' || process.env.NODE_ENV === 'development') {
         startWorker();
     }
