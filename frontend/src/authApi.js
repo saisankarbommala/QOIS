@@ -4,8 +4,7 @@ import axios from "axios";
 // --------------------------------------------------
 // API BASE URL (AUTO SWITCH DEV / PROD)
 // --------------------------------------------------
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://qois.onrender.com/api";
+const API_BASE_URL = "https://qois.onrender.com/api";
 
 // Optional Debug (Remove after testing)
 console.log("🌐 API BASE URL:", API_BASE_URL);
