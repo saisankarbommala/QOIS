@@ -6,10 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: './.env' }); 
 
 // Optional: Console logs for debugging environment variables (remove in final production deployment)
-console.log("SMTP_HOST =", process.env.SMTP_HOST);
-console.log("SMTP_PORT =", process.env.SMTP_PORT);
-console.log("SMTP_USER =", process.env.SMTP_USER);
-console.log("SMTP_PASS =", process.env.SMTP_PASS);
+
 
 
 // --------------------------------------------------------
