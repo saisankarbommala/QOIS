@@ -36,8 +36,7 @@ import {
   User,
 } from "lucide-react";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "https://qois.onrender.com/api";
+const API_BASE_URL = "https://qois.onrender.com/api";
 
 /* =========================================================
    ULTRA NEON GLASSMORPHIC HIRING PAGE (qh-* CLASSES)
