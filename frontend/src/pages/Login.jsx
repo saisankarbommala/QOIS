@@ -110,9 +110,7 @@ export default function Login() {
               Password
             </button>
             {!isProduction && (
-              <button className={`auth-tab ${mode === "otp" ? "active" : ""}`} onClick={() => setMode("otp")}>
-                OTP
-              </button>
+             
             )}
           </div>
 
