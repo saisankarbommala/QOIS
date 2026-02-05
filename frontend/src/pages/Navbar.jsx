@@ -468,93 +468,48 @@ export default function Navbar() {
           color:${colors.accentAqua};
           font-weight:bold;
         }
-          @media (max-width: 768px) {
+          @media (max-width:768px){
 
-  .navbar {
-    padding: 0.6rem 1rem;
-    height: 64px;
+  .navbar{
+    height:60px;
+    min-height:60px;
+    padding:0 12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:nowrap;   /* VERY IMPORTANT */
   }
 
-  .navbar__logo {
-    font-size: 1.2rem;
+  /* Logo control */
+  .navbar__logo{
+    font-size:18px;
+    white-space:nowrap;
   }
 
-  .quantum-logo-container {
-    width: 38px;
-    height: 38px;
-    margin-right: 8px;
+  /* Profile section fix */
+  .navbar__profile{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    height:60px;
   }
 
-  /* MOBILE MENU FULLSCREEN STYLE */
-  .navbar__links {
-    flex-direction: column;
-    position: fixed;
-    top: 64px;
-    right: 0;
-    width: 100%;
-    height: calc(100vh - 64px);
-
-    background: rgba(5,0,25,0.95);
-    backdrop-filter: blur(25px);
-
-    padding: 20px 0;
-    gap: 14px;
-
-    transform: translateY(-10px);
-    opacity: 0;
-    pointer-events: none;
-
-    transition: all 0.3s ease;
+  /* Hide username in mobile */
+  .username-text{
+    display:none;
   }
 
-  .navbar__links.open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: all;
+  /* Profile icon size */
+  .profile-circle{
+    width:34px;
+    height:34px;
+    font-size:14px;
   }
 
-  /* TOUCH FRIENDLY BUTTONS */
-  .navbar__links li {
-    width: 90%;
-  }
-
-  .navbar__links a {
-    display: block;
-    width: 100%;
-    padding: 14px 18px;
-    font-size: 1rem;
-
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .navbar__links a:active {
-    transform: scale(0.97);
-  }
-
-  .btn-cta {
-    width: 90%;
-    padding: 14px;
-    font-size: 1rem;
-  }
-
-  .navbar__toggle {
-    display: flex;
-  }
-
-  /* CLEAN HAMBURGER */
-  .bar {
-    width: 22px;
-    height: 2.5px;
-  }
-
-  /* PROFILE CIRCLE MOBILE */
-  .profile-circle {
-    width: 42px;
-    height: 42px;
-    font-size: 1.1rem;
+  /* Prevent any element stretching */
+  .navbar *{
+    max-height:60px;
   }
 }
 
