@@ -441,11 +441,7 @@ const styles = `
 
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
 
-@media(max-width: 750px) {
-  .auth-wrapper { grid-template-columns: 1fr; height: auto; max-width: 340px; max-height: 90vh; }
-  .auth-visual { display: none; }
-  .auth-card { padding: 25px; }
-}
+
 `;
 
 export default function Login() {
