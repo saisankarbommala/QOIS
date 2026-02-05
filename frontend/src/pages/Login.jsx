@@ -441,82 +441,11 @@ const styles = `
 
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
 
-/* ===== EXTRA SMALL PHONES — BIG FIELDS ===== */
-@media (max-width:420px){
-
-  /* Hide video */
-  .auth-visual,
-  .auth-video{
-    display:none !important;
-  }
-
-  /* Wrapper */
-  .auth-wrapper{
-    max-width:340px !important;
-    margin:0 auto;
-  }
-
-  /* Card */
-  .auth-card{
-    padding:20px 16px !important;
-    border-radius:18px;
-  }
-
-  /* Titles */
-  .auth-title{
-    font-size:22px;
-    text-align:center;
-  }
-
-  .auth-sub{
-    font-size:14px;
-    text-align:center;
-    margin-bottom:14px;
-  }
-
-  /* ===== BIG INPUT FIELDS ===== */
-  .auth-field{
-    padding:18px 16px;   /* bigger height */
-    gap:10px;
-    margin-bottom:14px;
-    border-radius:14px;
-  }
-
-  .auth-field svg{
-    width:18px;
-    height:18px;
-  }
-
-  .auth-field input{
-    font-size:16px;
-  }
-
-  /* ===== BIG OTP BOXES ===== */
-  .auth-field1{
-    align-items:center !important;
-  }
-
-  .auth-field1 input{
-    width:44px !important;
-    height:52px !important;
-    font-size:18px !important;
-    border-radius:12px;
-  }
-
-  /* ===== BIG BUTTON ===== */
-  .auth-btn{
-    padding:18px;
-    font-size:16px;
-    border-radius:30px;
-  }
-
-  /* Footer text */
-  .auth-card div{
-    font-size:14px;
-  }
-
+@media(max-width: 750px) {
+  .auth-wrapper { grid-template-columns: 1fr; height: auto; max-width: 340px; max-height: 90vh; }
+  .auth-visual { display: none; }
+  .auth-card { padding: 25px; }
 }
-
 `;
 
 export default function Login() {
