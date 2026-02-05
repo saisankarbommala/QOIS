@@ -508,9 +508,7 @@ export default function Navbar() {
   }
 
   /* Prevent any element stretching */
-  .navbar *{
-    max-height:60px;
-  }
+  
 }
 
       `}</style>
