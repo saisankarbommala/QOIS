@@ -41,6 +41,13 @@ const API_BASE_URL = "https://qois.onrender.com/api";
    (same as your original, with a few small additions)
 ========================================================= */
 const styles = `
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: black;
+  height: 100%; /* Root height fixed */
+}
 :root {
   --qh-bg-1: #020018;
   --qh-bg-2: #03001f;
