@@ -15,17 +15,14 @@ import { fetchBackends, createJob, submitJobToIbm } from "../jobsApi.js";
    🔥 GLOBAL NEON + GLASS STYLES (PLAIN CSS)
 ========================================================= */
 const styles = `
-.qjs-page {
-  min-height: 100vh;
-  padding: 26px 34px 40px;
-  background:
-    radial-gradient(circle at top left, #1d2345 0, transparent 55%),
-    radial-gradient(circle at bottom right, #312e81 0, transparent 55%),
-    radial-gradient(circle at top, #020617, #020018 55%, #000 100%);
+.qjs-page {min-height: auto; 
+  padding: 26px 34px 20px;
+  background:black;
   color: #e5e7ff;
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
   overflow-x: hidden;
+   box-sizing: border-box;
 }
 
 .qjs-page::before,
@@ -43,11 +40,13 @@ const styles = `
 .qjs-page::before {
   top: -160px;
   left: -120px;
+  
   background: radial-gradient(circle, rgba(56,189,248,0.7), transparent 70%);
-}
-.qjs-page::after {
-  bottom: -180px;
-  right: -140px;
+}.qjs-page::after {
+  position: absolute; /* fixed nundi absolute ki marchandi */
+  bottom: 0; /* -180px badulu 0 pettandi */
+  right: 0;
+  /* migilina code... */
   background: radial-gradient(circle, rgba(168,85,247,0.8), transparent 70%);
 }
 
@@ -76,14 +75,35 @@ const styles = `
 /* header */
 .qjs-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; 
   align-items: center;
-  gap: 18px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 18px;
+  position: relative;
 }
 .qjs-header-main {
   display: flex;
   flex-direction: column;
+}
+  .qjs-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.qjs-title-main {
+  font-size: 40px; 
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2.2s steps(26, end), blink-caret 1.1s step-end infinite;
+}
+.qjs-title-sub {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+  text-align: center; 
+   margin-bottom:25px;
 }
 .qjs-kicker {
   font-size: 11px;
@@ -101,36 +121,56 @@ const styles = `
   background: #22c55e;
   box-shadow: 0 0 14px #22c55e;
 }
-.qjs-title {
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-shadow: 0 0 30px rgba(129,140,248,0.8);
+.qjs-title{
+  font-size:40px;
+  font-weight:900;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  text-align:center;
+  color:white; /* white text */
+
 }
-.qjs-title span {
-  background: linear-gradient(90deg,#60a5fa,#a855f7,#22c55e);
-  -webkit-background-clip: text;
-  color: transparent;
+
+/* Remove gradient if pure white kavali */
+.qjs-title span{
+  color:white;
+  background:none;
 }
+
 .qjs-subtitle {
   margin-top: 7px;
   font-size: 13px;
   color: #9ca3ff;
   max-width: 680px;
-}
-.qjs-header-pill {
+  text-align:center;
+}.qjs-header-pill,
+.qjs-header-pill1
+{
+  position: absolute;
+  top: 10PX;
+  right: 18px; 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
+  gap: 2px;
+  padding: 7px 10px;
   border-radius: 999px;
-  background: radial-gradient(circle at left, rgba(56,189,248,0.4), rgba(15,23,42,0.96));
-  border: 1px solid rgba(96,165,250,0.9);
-  font-size: 12px;
-  box-shadow: 0 0 20px rgba(37,99,235,0.7);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: radial-gradient(circle at left, #22c55e44, transparent);
+  border: 1px solid rgba(34,197,94,0.7);
+  color: #bbf7d0;
+  animation: aiPulse 1.8s infinite ease-in-out;
 }
 
+.qjs-header-pill1:hover {
+transform: translateY(-4px) scale(1.01);
+
+  background:
+  0 0 15px rgba(139,92,246,.3),
+  0 0 25px rgba(6,182,212,.25),
+  0 10px 25px rgba(0,0,0,0.5);
+}
 /* tiny neon chip icon */
 .qjs-pill-icon {
   width: 14px;
@@ -142,60 +182,191 @@ const styles = `
 
 /* cards */
 .qjs-card {
-  background: radial-gradient(circle at top left, rgba(37,99,235,0.28), rgba(15,23,42,0.98));
-  border-radius: 22px;
-  padding: 18px 20px 18px;
-  border: 1px solid rgba(79,70,229,0.5);
-  box-shadow:
-    0 0 0 1px rgba(15,23,42,0.9),
-    0 30px 80px rgba(15,23,42,0.95);
-  backdrop-filter: blur(26px);
-  -webkit-backdrop-filter: blur(26px);
+ border-radius: 20px;
+  padding: 18px 20px;
   position: relative;
   overflow: hidden;
-  transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+
+  /* 🌌 SUBTLE NEON BG — cyan, indigo, violet */
+  background:
+    radial-gradient(circle at 25% 20%, rgba(139,92,246,0.15), transparent 40%),  /* violet glow */
+    radial-gradient(circle at 70% 80%, rgba(6,182,212,0.12), transparent 45%),   /* cyan glow */
+    radial-gradient(circle at 60% 10%, rgba(99,102,241,0.10), transparent 40%),  /* indigo hint */
+    linear-gradient(160deg,#040612,#0b0f2a 50%,#040612);
+
+  border: 1px solid rgba(139,92,246,0.20);
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.5),
+    0 0 15px rgba(139,92,246,0.15),
+    inset 0 1px 1px rgba(255,255,255,0.05);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .qjs-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: conic-gradient(
-    from 220deg,
-    rgba(56,189,248,0.0),
-    rgba(56,189,248,0.45),
-    rgba(168,85,247,0.4),
-    rgba(236,72,153,0.0)
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  padding:1.5px;
+
+  background:linear-gradient(
+    120deg,
+    #0ea5e9,  /* cyan */
+    #6366f1,  /* indigo */
+    #8b5cf6,  /* violet */
+    #0ea5e9
   );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-}
-.qjs-card:hover::before {
-  opacity: 0.16;
-}
+
+  background-size:300% 300%;
+  animation:borderMove 6s linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+
+  opacity:.7; /* subtle border glow */
+  pointer-events:none;
+}/* ✨ HOVER EFFECT */
 .qjs-card:hover {
-  transform: translateY(-3px) scale(1.005);
+  transform: translateY(-4px) scale(1.01);
+
   box-shadow:
-    0 0 0 1px rgba(129,140,248,0.95),
-    0 36px 90px rgba(15,23,42,1);
-  border-color: rgba(191,219,254,0.7);
+    0 0 15px rgba(139,92,246,.3),
+    0 0 25px rgba(6,182,212,.25),
+    0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* 🔁 BORDER ANIMATION */
+@keyframes borderMove {
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
 }
 .qjs-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  position: relative;
+  z-index: 3;
 }
-.qjs-card-title {
-  font-size: 18px;
-  font-weight: 600;
+  .qjs-card-header-bar {
+  margin: -18px -20px 18px;
+  padding: 16px 22px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+
+  /* ✅ Background FIXED */
+  background:
+    radial-gradient(circle at 82% 72%, rgba(168,85,247,0.28), transparent 52%),
+    linear-gradient(120deg,#020617,#020617,#0b1120,#020617);
+
+  background-size: 600% 600%;
+  animation: quantumFlow 12s linear infinite;
+
+  border-top-left-radius: 22px;
+  border-top-right-radius: 22px;
+
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    inset 0 1px 22px rgba(56,189,248,0.28),
+    inset 0 -1px 12px rgba(139,92,246,0.22),
+    0 10px 30px rgba(0,0,0,0.45);
 }
-.qjs-card-sub {
+    .qjs-card-header-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+
+  background: linear-gradient(
+    120deg,
+    #00f0ff,
+    #8b5cf6,
+    #ff2fd3,
+    #00f0ff
+  );
+  background-size: 400% 400%;
+  animation: borderSlide 6s linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0.9;
+  pointer-events: none;
+}
+.qjs-card-header-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255,255,255,0.25),
+    transparent 70%
+  );
+
+  animation: lightSweep 4.5s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}.qjs-card-header-bar .qjs-card-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+
+  background: linear-gradient(
+    90deg,
+    #00f0ff,
+    #8b5cf6,
+    #ff2fd3,
+    #00f0ff
+  );
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: titleShimmer 6s linear infinite;
+}.qjs-card-header-bar .qjs-card-sub {
   font-size: 12px;
-  color: #9ca3ff;
-  margin-top: 2px;
+  margin-top: 4px;
+  color: #bdf3ff;
+  opacity: 0.95;
+
+  text-shadow:
+    0 0 8px rgba(0,240,255,0.45),
+    0 0 14px rgba(139,92,246,0.3);
+}
+/* 🔁 ANIMATIONS */
+@keyframes quantumFlow {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
 }
 
+@keyframes borderSlide {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
+}
+
+@keyframes lightSweep {
+  0% {transform: translateX(-100%)}
+  50% {transform: translateX(100%)}
+  100% {transform: translateX(100%)}
+}
 /* stepper */
 .qjs-stepper {
   display: flex;
@@ -204,13 +375,14 @@ const styles = `
   flex-wrap: wrap;
 }
 .qjs-step-pill {
+text-align:center;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
   border-radius: 999px;
   border: 1px solid rgba(148,163,255,0.6);
-  background: rgba(15,23,42,0.8);
+  background: rgba(14, 61, 55, 0.8);
   font-size: 11px;
   color: #c7d2fe;
   opacity: 0.7;
@@ -229,7 +401,7 @@ const styles = `
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  background: rgba(15,23,42,0.9);
+  background: cyan;
 }
 
 /* layout */
@@ -252,23 +424,59 @@ const styles = `
   gap: 12px;
 }
 .qjs-algo-card {
-  border-radius: 18px;
-  padding: 10px 12px;
-  border: 1px solid rgba(148,163,255,0.5);
-  background: radial-gradient(circle at top left, rgba(59,130,246,0.28), rgba(15,23,42,0.98));
-  cursor: pointer;
-  transition: border-color 0.17s ease, box-shadow 0.17s ease, transform 0.15s ease;
-  font-size: 12px;
-  text-align: left;
+ border-radius: 20px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+
+  /* 🌌 SUBTLE NEON BG — cyan, indigo, violet */
+  background:
+    radial-gradient(circle at 25% 20%, rgba(139,92,246,0.15), transparent 40%),  /* violet glow */
+    radial-gradient(circle at 70% 80%, rgba(6,182,212,0.12), transparent 45%),   /* cyan glow */
+    radial-gradient(circle at 60% 10%, rgba(99,102,241,0.10), transparent 40%),  /* indigo hint */
+    linear-gradient(160deg,#040612,#0b0f2a 50%,#040612);
+
+  border: 1px solid rgba(139,92,246,0.20);
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.5),
+    0 0 15px rgba(139,92,246,0.15),
+    inset 0 1px 1px rgba(255,255,255,0.05);
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.qjs-algo-card:hover {
-  transform: translateY(-1px);
-  border-color: rgba(191,219,254,0.9);
-  box-shadow: 0 0 18px rgba(96,165,250,0.8);
+  .qjs-algo-card::before {
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  padding:1.5px;
+  background-size:300% 300%;
+  animation:borderMove 6s linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+
+  opacity:.7; /* subtle border glow */
+  pointer-events:none;
 }
+.qjs-algo-card:hover { transform: translateY(-4px) scale(1.01);
+
+  box-shadow:
+    0 0 15px rgba(139,92,246,.3),
+    0 0 25px rgba(6,182,212,.25),
+    0 10px 25px rgba(0,0,0,0.5);
+}
+  
 .qjs-algo-card-active {
-  border-color: rgba(251,191,36,0.9);
-  box-shadow: 0 0 22px rgba(251,191,36,0.7);
+  border-color: rgba(3, 26, 10, 0.9);
+  box-shadow: 0 0 22px rgba(14, 58, 57, 0.7);
 }
 .qjs-algo-title {
   display: flex;
@@ -276,13 +484,42 @@ const styles = `
   gap: 6px;
   font-weight: 600;
   font-size: 13px;
+
+  background: #5eead4;
+   /* soft cyan */
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+  
+.qd-algo-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.qd-algo-title-main {
+  font-size: 40px; 
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: typing 2.2s steps(26, end), blink-caret 1.1s step-end infinite;
+}
+.qd-algo-title-sub {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-top: 4px;
+  text-align: center; 
+   margin-bottom:25px;
 }
 .qjs-algo-pill {
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 999px;
-  background: rgba(15,23,42,0.9);
+  
   border: 1px solid rgba(148,163,255,0.7);
+  color:cyan;
 }
 
 /* mini svg icon placeholder */
@@ -340,7 +577,14 @@ const styles = `
   border-radius: 999px;
   padding: 8px 16px;
   border: none;
-  background: linear-gradient(90deg,#4f46e5,#7c3aed);
+  background: linear-gradient(
+  120deg,
+  #0ea5e9,
+  #6366f1,
+  #8b5cf6,
+  #0ea5e9
+);
+
   color: #f9fafb;
   font-size: 13px;
   font-weight: 600;
@@ -506,7 +750,7 @@ const styles = `
 .qjs-circuit-table td,
 .qjs-circuit-table th {
   border: 1px solid rgba(31,41,55,0.9);
-  padding: 2px 4px;
+  padding: 2px 14px;
   min-width: 52px;
   text-align: center;
   font-size: 11px;
@@ -698,6 +942,194 @@ const styles = `
     flex-direction: column;
   }
 }
+  /* ==============================
+   PERFECT MOBILE VERSION V2
+============================== */
+
+@media (max-width:768px){
+
+/* GLOBAL SAFETY */
+*{
+  box-sizing:border-box;
+}
+
+body{
+  overflow-x:hidden;
+}
+
+/* PAGE */
+.qjs-page{
+  padding:12px 10px 18px;
+  overflow-x:hidden;
+}
+
+/* Reduce heavy glow for performance */
+.qjs-page::before,
+.qjs-page::after{
+  width:180px;
+  height:180px;
+  filter:blur(40px);
+  opacity:.18;
+}
+
+/* HEADER */
+.qjs-header{
+  gap:8px;
+  margin-bottom:12px;
+  text-align:center;
+}
+
+.qjs-title{
+  font-size:20px;
+  letter-spacing:.06em;
+  line-height:1.2;
+}
+
+.qjs-title-main{
+  font-size:18px;
+  letter-spacing:.05em;
+  white-space:normal;
+  animation:none;
+  line-height:1.3;
+}
+
+.qjs-subtitle{
+  font-size:12px;
+  padding:0 4px;
+  line-height:1.4;
+}
+
+/* Pill center */
+.qjs-header-pill{
+  position:static;
+  margin:6px auto 0;
+  font-size:10px;
+  padding:6px 10px;
+}
+
+/* CARDS */
+.qjs-card{
+  padding:12px;
+  border-radius:12px;
+  backdrop-filter:blur(6px);
+}
+
+.qjs-card-header-bar{
+  padding:10px;
+}
+
+.qjs-card-header-bar .qjs-card-title{
+  font-size:14px;
+}
+
+/* LAYOUT STACK */
+.qjs-layout{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* ALGORITHM GRID */
+.qjs-grid-2{
+  grid-template-columns:1fr;
+  gap:10px;
+}
+
+.qjs-algo-card{
+  padding:12px;
+}
+
+/* STEPPER */
+.qjs-stepper{
+  flex-direction:column;
+  gap:6px;
+}
+
+.qjs-step-pill{
+  width:100%;
+  justify-content:center;
+  padding:8px;
+  font-size:11px;
+}
+
+/* FORM */
+.qjs-form-grid{
+  grid-template-columns:1fr;
+  gap:8px;
+}
+
+.qjs-input,
+.qjs-select,
+.qjs-textarea{
+  font-size:14px;
+  padding:12px;
+  border-radius:10px;
+}
+
+/* BUTTONS */
+.qjs-btn{
+  width:100%;
+  justify-content:center;
+  padding:13px;
+  font-size:14px;
+  border-radius:12px;
+}
+
+.qjs-btn-outline{
+  width:100%;
+  justify-content:center;
+  padding:12px;
+}
+
+/* CIRCUIT */
+.qjs-circuit-shell{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.qjs-side-palette{
+  order:2;
+  padding:10px;
+}
+
+/* Better scroll */
+.qjs-canvas-scroll{
+  max-height:180px;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* Gate buttons */
+.qjs-gate-btn{
+  padding:8px 12px;
+  font-size:12px;
+}
+
+/* MODAL */
+.qjs-modal-panel{
+  width:95%;
+  padding:12px;
+  border-radius:12px;
+}
+
+/* FOOTER */
+.qjs-footer-row{
+  flex-direction:column;
+  gap:8px;
+}
+
+/* Reduce heavy animations */
+.qjs-card::before,
+.qjs-card-header-bar::before,
+.qjs-card-header-bar::after{
+  animation:none;
+  opacity:.5;
+}
+
+}
+
+  
 `;
 
 /* =========================================================
@@ -1882,23 +2314,14 @@ export default function JobSubmission() {
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="qjs-header-main">
-            <div className="qjs-kicker">
-              <span className="qjs-kicker-dot" />
-              Quantum Job Builder • IBM Runtime REST
-            </div>
+            
             <div className="qjs-title">
-              <span>JOB SUBMISSION STUDIO</span>
+              <span>JOB SUBMISSION PLATFORM</span>
             </div>
             <div className="qjs-subtitle">
-              Design circuits visually, inspect the generated{" "}
-              <strong>OpenQASM 3.0</strong>, and submit safely to IBM Quantum
-              with <strong>preflight checks</strong> to minimize job failures.
-            </div>
+"Design, review, submit safely."  </div>
           </div>
-          <div className="qjs-header-pill">
-            <div className="qjs-pill-icon" />
-            Runtime-safe • Neon circuit IDE
-          </div>
+          
         </motion.div>
 
         {/* STEPPER */}
@@ -1946,17 +2369,20 @@ export default function JobSubmission() {
             >
               {/* LEFT: Algorithm picker */}
               <div className="qjs-card">
-                <div className="qjs-card-header">
-                  <div>
-                    <div className="qjs-card-title">
-                      <span className="qjs-icon-orb" /> Choose Quantum
-                      Algorithm
+                <div>
+                      <div className="qjs-card-header-bar">
+                      <div className="qjs-card-title">
+                        <span className="qjs-icon-orb" /> Choose Quantum Algorithm
+                      </div>
+                       
+                      <div className="qjs-card-sub">
+                        Select a high-level template. The System will generate an IBM- friendly OpenQASM program which you can refine later.
+                        
+                      </div>
+                    
+                      
                     </div>
-                    <div className="qjs-card-sub">
-                      Select a high-level template. The system will generate an
-                      IBM-friendly OpenQASM program which you can refine later.
-                    </div>
-                  </div>
+                  
                   <button
                     type="button"
                     className="qjs-btn-outline"
@@ -1997,6 +2423,7 @@ export default function JobSubmission() {
                       <div className="qjs-algo-title">
                         <span className="qjs-icon-orb" />
                         {algo.label}
+                        
                         <span className="qjs-algo-pill">{algo.badge}</span>
                       </div>
                       <div
@@ -2004,6 +2431,7 @@ export default function JobSubmission() {
                           fontSize: 11,
                           color: "#c7d2fe",
                           marginTop: 4,
+                          
                         }}
                       >
                         {algo.description}
@@ -2013,6 +2441,7 @@ export default function JobSubmission() {
                           fontSize: 10,
                           marginTop: 4,
                           opacity: 0.8,
+                          color:"#f97373",
                         }}
                       >
                         min qubits: {algo.minQubits}
@@ -2082,16 +2511,27 @@ export default function JobSubmission() {
                 <div className="qjs-card">
                   <div className="qjs-card-header">
                     <div>
+                      <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
                         <span className="qjs-icon-orb" /> Skeleton Circuit
                         Preview
                       </div>
+                        <div className="qjs-header-pill">
+            <div className="qjs-pill-icon" />
+            Runtime-safe
+          </div>
                       <div className="qjs-card-sub">
                         Lightweight gate grid reconstructed from the current
                         template. Great for sanity-checking your algorithm
                         layout.
+                        
                       </div>
+                    
+                      
                     </div>
+                    
+                  </div>
+                  
                   </div>
                   <div className="qjs-circuit-card-inner">
                     <div className="qjs-circuit-header">
@@ -2135,14 +2575,16 @@ export default function JobSubmission() {
                 <div className="qjs-card">
                   <div className="qjs-card-header">
                     <div>
+                      <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
-                        <span className="qjs-icon-orb" /> Generated QASM
-                        Snapshot
+                        <span className="qjs-icon-orb" /> Generated QASM Snapshot
                       </div>
+                        
                       <div className="qjs-card-sub">
-                        The exact OpenQASM 3.0 text which will be sent to IBM
-                        Quantum (you can refine it in the next step).
-                      </div>
+                       This is the OpenQASM 3.0 code that will be sent to IBM Quantum, which you can review and refine in next step. </div>
+                    
+                      
+                    </div>
                     </div>
                   </div>
                   <div className="qjs-qasm-wrapper">
@@ -2178,29 +2620,36 @@ export default function JobSubmission() {
               <div className="qjs-card">
                 <div className="qjs-card-header">
                   <div>
-                    <div className="qjs-card-title">
-                      <span className="qjs-icon-orb" /> Drag & Drop Circuit
-                      Designer
-                    </div>
-                    <div className="qjs-card-sub">
-                      Build your circuit visually. Drag gates onto the timeline,
-                      right-click a cell or press <strong>Shift+G</strong> to
-                      open the floating palette.
-                    </div>
-                  </div>
-                  <button
+                   <div>
+                      <div className="qjs-card-header-bar">
+                      <div className="qjs-card-title">
+                        <span className="qjs-icon-orb" /> Drag and Drop Circuit Designer
+                      </div>
+                        
+                      <div className="qjs-card-sub">
+                       Build your quantum circuit visually by dragging gates onto the timeline; right-click any cell or press Shift+G to open the floating gate palette for quick access  </div>
+                       
+           
+                    <button
                     type="button"
-                    className="qjs-btn-outline"
+                    className="qjs-header-pill1"
                     onClick={regenerateFromAlgo}
                   >
                     Reset from algorithm
                   </button>
+                 
+          
+                      
+                    </div>
+                    </div>
+                  </div>
+                  
                 </div>
 
                 <div className="qjs-circuit-shell">
                   {/* SIDE PALETTE */}
                   <div className="qjs-side-palette">
-                    <div className="qjs-side-palette-title">
+                    <div className="qjs-side-pallette-title">
                       Advanced Gate Palette
                     </div>
                     <div className="qjs-card-sub">
@@ -2405,15 +2854,17 @@ export default function JobSubmission() {
               <div className="qjs-right-stack">
                 <div className="qjs-card">
                   <div className="qjs-card-header">
-                    <div>
+                   <div>
+                      <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
-                        <span className="qjs-icon-orb" /> QASM Editor & Preview
+                        <span className="qjs-icon-orb" />QASM Editor & Preview
                       </div>
+                        
                       <div className="qjs-card-sub">
-                        You can edit the OpenQASM 3.0 program. Apply changes
-                        back into the circuit grid using the{" "}
-                        <strong>Apply</strong> button.
-                      </div>
+                     You can directly edit the OpenQASM 3.0 program and then apply your changes back to the circuit grid by clicking the Apply button. </div>
+                    
+                      
+                    </div>
                     </div>
                   </div>
                   <div className="qjs-qasm-wrapper">
@@ -2481,10 +2932,10 @@ export default function JobSubmission() {
 
                 <div className="qjs-card">
                   <div className="qjs-card-header">
-                    <div>
+                    <div> <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
-                        <span className="qjs-icon-orb" /> Circuit Quick Stats
-                      </div>
+                        <span className="qjs-icon-orb" />QASM Editor & Preview
+                      </div></div>
                     </div>
                   </div>
                   <div
@@ -2550,15 +3001,17 @@ export default function JobSubmission() {
               <div className="qjs-card">
                 <div className="qjs-card-header">
                   <div>
-                    <div className="qjs-card-title">
-                      <span className="qjs-icon-orb" /> Execution Settings
-                    </div>
-                    <div className="qjs-card-sub">
-                      Select primitive, backend, and shot count. The backend
-                      converts this into a REST call for IBM Qiskit Runtime
-                      primitives.
-                    </div>
-                  </div>
+                    <div className="qjs-card-header">
+                   <div>
+                      <div className="qjs-card-header-bar">
+                      <div className="qjs-card-title">
+                        <span className="qjs-icon-orb" />Execution Settings
+                      </div>
+                        
+                      <div className="qjs-card-sub">
+                        Select the primitive, backend, and shot count; the chosen backend then converts your selections into a REST call for execution on IBM Qiskit Runtime Primitives, seamlessly linking your configuration to the quantum runtime.
+                     </div>   
+                    </div></div></div></div>
                 </div>
 
                 <div className="qjs-form-grid">
@@ -2655,11 +3108,15 @@ export default function JobSubmission() {
               <div className="qjs-right-stack">
                 <div className="qjs-card">
                   <div className="qjs-card-header">
-                    <div>
+                     <div className="qjs-card-header">
+                   <div>
+                      <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
-                        <span className="qjs-icon-orb" /> Submission Summary
+                        <span className="qjs-icon-orb" />Submission Summary
                       </div>
-                    </div>
+                        
+                      <div className="qjs-card-sub">
+                     Review all your selections and settings in the Submission Summary before sending your job to the quantum backend.</div>   </div></div></div>
                   </div>
                   <ul
                     style={{
@@ -2707,11 +3164,13 @@ export default function JobSubmission() {
 
                 <div className="qjs-card">
                   <div className="qjs-card-header">
-                    <div>
+                     <div>
+                      <div className="qjs-card-header-bar">
                       <div className="qjs-card-title">
-                        <span className="qjs-icon-orb" /> Backend Snapshot
+                        <span className="qjs-icon-orb" />Backend Snapshot
                       </div>
-                    </div>
+                        
+                      <div className="qjs-card-sub">Use the Backend Snapshot to view a detailed overview of the selected backend, including its current operational status and key performance metrics</div></div></div>
                   </div>
                   {/* UPDATED LOADING/ERROR STATE */}
                   {backendLoading ? (
