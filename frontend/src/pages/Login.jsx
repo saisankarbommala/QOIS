@@ -440,11 +440,127 @@ const styles = `
 .google-divider::before, .google-divider::after { content: ""; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.08); }
 
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
+/* ================= MOBILE OPTIMIZATION ================= */
 
-@media(max-width: 750px) {
-  .auth-wrapper { grid-template-columns: 1fr; height: auto; max-width: 340px; max-height: 90vh; }
-  .auth-visual { display: none; }
-  .auth-card { padding: 25px; }
+@media (max-width: 768px) {
+
+  .auth-page{
+    height:auto;
+    min-height:100vh;
+    padding:10px;
+    align-items:center;
+  }
+
+  .blob{
+    width:280px;
+    height:280px;
+    filter:blur(60px);
+  }
+
+  .auth-wrapper{
+    grid-template-columns:1fr;
+    width:100%;
+    height:auto;
+    margin-top:0;
+    border-radius:22px;
+  }
+
+  /* Hide video side */
+  .auth-visual{
+    display:none;
+  }
+
+  /* Card Full Width */
+  .auth-card{
+    padding:28px 20px;
+    border-radius:22px;
+  }
+
+  .auth-title{
+    font-size:26px;
+    text-align:center;
+  }
+
+  .auth-sub{
+    text-align:center;
+    font-size:14px;
+  }
+
+  .auth-tabs{
+    margin-bottom:20px;
+  }
+
+  .auth-tab{
+    font-size:14px;
+    padding:10px;
+  }
+
+  /* Input Fields */
+  .auth-field{
+    padding:14px 16px;
+    border-radius:10px;
+  }
+
+  .auth-field input{
+    font-size:15px;
+  }
+
+  /* OTP Inputs */
+  .auth-field1 input{
+    width:42px !important;
+    height:48px !important;
+    font-size:18px !important;
+  }
+
+  /* Buttons */
+  .auth-btn{
+    padding:14px;
+    font-size:15px;
+    border-radius:30px;
+  }
+
+  /* Google button spacing */
+  .google-btn{
+    font-size:14px;
+  }
+
+  /* Footer text */
+  .auth-card div{
+    font-size:14px;
+  }
+
+}
+
+
+/* Extra Small Phones */
+
+@media (max-width: 420px){
+
+  .auth-card{
+    padding:22px 16px;
+  }
+
+  .auth-title{
+    font-size:22px;
+  }
+
+  .auth-field{
+    gap:8px;
+  }
+
+  .auth-field svg{
+    width:16px;
+    height:16px;
+  }
+
+  .auth-field1 input{
+    width:38px !important;
+    height:44px !important;
+    font-size:16px !important;
+  }
+
+}
+
 }
 `;
 
