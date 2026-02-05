@@ -68,12 +68,14 @@ html, body {
 
 /* PAGE BACKGROUND + ANIMATED GRID */
 .qh-page {
-  min-height: 100vh;
-  padding: 26px 34px 40px;
-  background:
-    black;
+ box-sizing: border-box;
+  min-height: 100vh; 
+  display: flex;       /* Flex start */
+  flex-direction: column; /* Vertical alignment */
+  padding: 26px 34px 0px; /* Bottom padding 0 (copyright handles it) */
+  background: black;
   color: var(--qh-text-main);
-  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Poppins", sans-serif;
   position: relative;
   overflow-x: hidden;
 }
