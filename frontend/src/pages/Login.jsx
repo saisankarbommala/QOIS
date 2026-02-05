@@ -442,42 +442,45 @@ const styles = `
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
 /* ================= MOBILE OPTIMIZATION ================= */
 
-@media (max-width: 768px) {
+/* ===== MOBILE VIEW ONLY ===== */
+@media (max-width:768px){
 
+  /* page */
   .auth-page{
-    height:auto;
+    position:relative;
+    width:100%;
     min-height:100vh;
     padding:10px;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
     align-items:center;
   }
 
-  .blob{
-    width:280px;
-    height:280px;
-    filter:blur(60px);
-  }
-
-  .auth-wrapper{
-    grid-template-columns:1fr;
-    width:100%;
-    height:auto;
-    margin-top:0;
-    border-radius:22px;
-  }
-
-  /* Hide video side */
+  /* remove side video */
   .auth-visual{
     display:none;
   }
 
-  /* Card Full Width */
-  .auth-card{
-    padding:28px 20px;
-    border-radius:22px;
+  /* wrapper */
+  .auth-wrapper{
+    grid-template-columns:1fr;
+    width:100%;
+    max-width:380px;
+    height:auto;
+    margin:0 auto;
+    border-radius:18px;
   }
 
+  /* card */
+  .auth-card{
+    padding:22px 16px;
+    border-radius:18px;
+  }
+
+  /* text */
   .auth-title{
-    font-size:26px;
+    font-size:24px;
     text-align:center;
   }
 
@@ -486,47 +489,34 @@ const styles = `
     font-size:14px;
   }
 
-  .auth-tabs{
-    margin-bottom:20px;
-  }
-
-  .auth-tab{
-    font-size:14px;
-    padding:10px;
-  }
-
-  /* Input Fields */
+  /* inputs */
   .auth-field{
-    padding:14px 16px;
-    border-radius:10px;
+    padding:14px;
+    margin-bottom:14px;
   }
 
   .auth-field input{
     font-size:15px;
   }
 
-  /* OTP Inputs */
+  /* OTP boxes */
   .auth-field1 input{
-    width:42px !important;
-    height:48px !important;
-    font-size:18px !important;
+    width:38px !important;
+    height:44px !important;
+    font-size:16px !important;
   }
 
-  /* Buttons */
+  /* button */
   .auth-btn{
     padding:14px;
     font-size:15px;
-    border-radius:30px;
   }
 
-  /* Google button spacing */
-  .google-btn{
-    font-size:14px;
-  }
-
-  /* Footer text */
-  .auth-card div{
-    font-size:14px;
+  /* blobs smaller so no overflow */
+  .blob{
+    width:180px;
+    height:180px;
+    filter:blur(50px);
   }
 
 }
@@ -672,7 +662,7 @@ const isActiveLink = (path) => {
           <p className="auth-sub">Manage your digital farm.</p>
 
           <div className="auth-tabs">
-            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Login</button>
+            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Password</button>
             
           </div>
 
