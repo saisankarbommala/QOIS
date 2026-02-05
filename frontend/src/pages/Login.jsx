@@ -672,7 +672,7 @@ const isActiveLink = (path) => {
           <p className="auth-sub">Manage your digital farm.</p>
 
           <div className="auth-tabs">
-            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Password</button>
+            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Login</button>
             
           </div>
 
