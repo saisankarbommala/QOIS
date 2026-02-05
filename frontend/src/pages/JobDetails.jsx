@@ -34,19 +34,21 @@ import {
 
 const styles = `
 .qjd-page {
-  min-height: 100vh;
-  padding: 26px 34px 40px;
+  min-height: auto;
+  padding: 26px 34px 20px;
   background:black;
   color: #e5e7ff;
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .qjd-page::before,
 .qjd-page::after {
   content: "";
-  position: fixed;
+ position: absolute; /* fixed badulu absolute */
+  bottom: -100px; /* Koncham paiki jarapandi */
+  right: -100px;
   width: 520px;
   height: 520px;
   border-radius: 999px;
@@ -451,6 +453,123 @@ const styles = `
     grid-template-columns: 1fr;
   }
 }
+  /* ============================
+   MOBILE PERFECT VERSION
+============================ */
+
+@media (max-width:768px){
+
+/* PAGE */
+.qjd-page{
+  padding:14px 12px 20px;
+  overflow-x:hidden;
+}
+
+/* Reduce background glow */
+.qjd-page::before,
+.qjd-page::after{
+  width:220px;
+  height:220px;
+  filter:blur(60px);
+  opacity:.25;
+}
+
+/* HEADER STACK */
+.qjd-header{
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:12px;
+}
+
+.qjd-header-right{
+  align-items:center;
+}
+
+/* TITLES */
+.qjd-title{
+  font-size:20px;
+  letter-spacing:.08em;
+}
+
+.qjd-subtitle{
+  font-size:12px;
+}
+
+/* CARDS */
+.qjd-card{
+  padding:14px;
+  border-radius:16px;
+}
+
+/* GRIDS → SINGLE COLUMN */
+.qjd-top-grid,
+.qjd-bottom-grid{
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+/* STATS */
+.qjd-stat-grid{
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.qjd-stat-tile{
+  padding:10px;
+}
+
+/* QASM */
+.qjd-qasm-scroll{
+  max-height:180px;
+}
+
+.qjd-qasm-code{
+  font-size:10px;
+}
+
+/* CIRCUIT */
+.qjd-circ-grid{
+  padding:6px;
+}
+
+.qjd-circ-table td,
+.qjd-circ-table th{
+  min-width:40px;
+  font-size:10px;
+  padding:3px;
+}
+
+/* RESULTS */
+.qjd-results-summary{
+  grid-template-columns:1fr;
+}
+
+/* BUTTONS FULL WIDTH */
+.qjd-btn,
+.qjd-btn-outline{
+  width:100%;
+  justify-content:center;
+  padding:12px;
+  font-size:13px;
+}
+
+/* JSON BOX */
+.qjd-results-json{
+  max-height:200px;
+  font-size:10px;
+}
+
+/* DISABLE HEAVY HOVERS ON MOBILE */
+.qjd-card:hover{
+  transform:none;
+  box-shadow:
+    0 0 0 1px rgba(15,23,42,0.9),
+    0 20px 50px rgba(15,23,42,0.8);
+}
+
+}
+
 `;
 
 /* ---------- helpers copied from submission page-style logic ---------- */
