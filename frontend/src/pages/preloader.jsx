@@ -173,23 +173,18 @@ export default function QuantumPreloader({ onFinish }) {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-
 @keyframes pulse {
-  0%, 100% { transform: scale(1) rotate(inherit); }
-  50% { transform: scale(1.03) rotate(inherit); }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
+
 
 @keyframes orbitShimmer {
   0%, 100% { opacity: 0.4; border-style: dashed; }
   50% { opacity: 0.8; border-style: double; border-width: 2.5px; }
 }
 
-        .b1 { width: 440px; height: 440px; border-color: var(--neon-cyan); opacity: 0.3; }
-        .b2 { width: 410px; height: 410px; border-color: var(--neon-violet); animation-direction: reverse; opacity: 0.2; }
-
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
+      
 
         .orbit {
           position: absolute;
