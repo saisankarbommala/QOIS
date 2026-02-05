@@ -440,117 +440,11 @@ const styles = `
 .google-divider::before, .google-divider::after { content: ""; flex: 1; height: 1px; background: rgba(255, 255, 255, 0.08); }
 
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
-/* ================= MOBILE OPTIMIZATION ================= */
 
-/* ===== MOBILE VIEW ONLY ===== */
-@media (max-width:768px){
-
-  /* page */
-  .auth-page{
-    position:relative;
-    width:100%;
-    min-height:100vh;
-    padding:10px;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-
-  /* remove side video */
-  .auth-visual{
-    display:none;
-  }
-
-  /* wrapper */
-  .auth-wrapper{
-    grid-template-columns:1fr;
-    width:100%;
-    max-width:380px;
-    height:auto;
-    margin:0 auto;
-    border-radius:18px;
-  }
-
-  /* card */
-  .auth-card{
-    padding:22px 16px;
-    border-radius:18px;
-  }
-
-  /* text */
-  .auth-title{
-    font-size:24px;
-    text-align:center;
-  }
-
-  .auth-sub{
-    text-align:center;
-    font-size:14px;
-  }
-
-  /* inputs */
-  .auth-field{
-    padding:14px;
-    margin-bottom:14px;
-  }
-
-  .auth-field input{
-    font-size:15px;
-  }
-
-  /* OTP boxes */
-  .auth-field1 input{
-    width:38px !important;
-    height:44px !important;
-    font-size:16px !important;
-  }
-
-  /* button */
-  .auth-btn{
-    padding:14px;
-    font-size:15px;
-  }
-
-  /* blobs smaller so no overflow */
-  .blob{
-    width:180px;
-    height:180px;
-    filter:blur(50px);
-  }
-
-}
-
-
-/* Extra Small Phones */
-
-@media (max-width: 420px){
-
-  .auth-card{
-    padding:22px 16px;
-  }
-
-  .auth-title{
-    font-size:22px;
-  }
-
-  .auth-field{
-    gap:8px;
-  }
-
-  .auth-field svg{
-    width:16px;
-    height:16px;
-  }
-
-  .auth-field1 input{
-    width:38px !important;
-    height:44px !important;
-    font-size:16px !important;
-  }
-
-}
-
+@media(max-width: 750px) {
+  .auth-wrapper { grid-template-columns: 1fr; height: auto; max-width: 340px; max-height: 90vh; }
+  .auth-visual { display: none; }
+  .auth-card { padding: 25px; }
 }
 `;
 
@@ -587,13 +481,6 @@ const handleOtpKeyDown = (e, index) => {
     document.getElementById(`otp-${index - 1}`).focus();
   }
 };
-const isActiveLink = (path) => {
-  if (path === "/") {
-    return location.pathname === "/";
-  }
-  return location.pathname.startsWith(path);
-};
-
 
   const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
 
@@ -662,7 +549,7 @@ const isActiveLink = (path) => {
           <p className="auth-sub">Manage your digital farm.</p>
 
           <div className="auth-tabs">
-            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Password</button>
+            <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Login</button>
             
           </div>
 
