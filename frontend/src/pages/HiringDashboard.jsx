@@ -35,7 +35,7 @@ import {
   Filter,
   User,
 } from "lucide-react";
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "https://qois.onrender.com/api";
 /* =========================================================
    ULTRA NEON GLASSMORPHIC HIRING PAGE (qh-* CLASSES)
    (same as your original, with a few small additions)
