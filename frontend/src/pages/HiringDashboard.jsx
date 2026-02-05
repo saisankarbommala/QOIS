@@ -94,7 +94,18 @@ const styles = `
   right: -140px;
   background: radial-gradient(circle, rgba(168,85,247,0.8), transparent 70%);
 }
-
+.copyright {
+    /* Updated copyright style for better dark theme integration */
+    background: #08001F; /* Very dark background */
+    width: 100%;
+    max-width: 100vw;
+    text-align: center;
+    padding: 20px 0; 
+    border-top: 1px solid rgba(148,163,255,0.1);
+    font-size: 12px; 
+    color: #9ca3af; /* Soft gray text */
+    margin-top: 30px; /* Space from content */
+}
 /* subtle moving grid */
 .qh-grid-bg {
   position: fixed;
