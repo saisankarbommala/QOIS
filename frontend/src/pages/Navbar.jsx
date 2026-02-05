@@ -468,6 +468,96 @@ export default function Navbar() {
           color:${colors.accentAqua};
           font-weight:bold;
         }
+          @media (max-width: 768px) {
+
+  .navbar {
+    padding: 0.6rem 1rem;
+    height: 64px;
+  }
+
+  .navbar__logo {
+    font-size: 1.2rem;
+  }
+
+  .quantum-logo-container {
+    width: 38px;
+    height: 38px;
+    margin-right: 8px;
+  }
+
+  /* MOBILE MENU FULLSCREEN STYLE */
+  .navbar__links {
+    flex-direction: column;
+    position: fixed;
+    top: 64px;
+    right: 0;
+    width: 100%;
+    height: calc(100vh - 64px);
+
+    background: rgba(5,0,25,0.95);
+    backdrop-filter: blur(25px);
+
+    padding: 20px 0;
+    gap: 14px;
+
+    transform: translateY(-10px);
+    opacity: 0;
+    pointer-events: none;
+
+    transition: all 0.3s ease;
+  }
+
+  .navbar__links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* TOUCH FRIENDLY BUTTONS */
+  .navbar__links li {
+    width: 90%;
+  }
+
+  .navbar__links a {
+    display: block;
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 1rem;
+
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .navbar__links a:active {
+    transform: scale(0.97);
+  }
+
+  .btn-cta {
+    width: 90%;
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+
+  /* CLEAN HAMBURGER */
+  .bar {
+    width: 22px;
+    height: 2.5px;
+  }
+
+  /* PROFILE CIRCLE MOBILE */
+  .profile-circle {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+  }
+}
+
       `}</style>
     </nav>
   );
