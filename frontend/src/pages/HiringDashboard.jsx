@@ -67,18 +67,21 @@ html, body {
 }
 
 /* PAGE BACKGROUND + ANIMATED GRID */
-.qh-page {
- box-sizing: border-box;
-  min-height: 100vh; 
-  display: flex;       /* Flex start */
-  flex-direction: column; /* Vertical alignment */
-  padding: 26px 34px 0px; /* Bottom padding 0 (copyright handles it) */
+/* PAGE BACKGROUND + ANIMATED GRID */
+.qh-page {min-height: auto; 
+ min-height: 100vh; /* Background full screen undalante deenni 100vh unchi... */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Content ni top ki push chesthundi */
+  padding: 26px 34px 20px;
   background: black;
-  color: var(--qh-text-main);
-  font-family: "Poppins", sans-serif;
+  color: #e5e7ff;
+  font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
   overflow-x: hidden;
+  box-sizing: border-box;
 }
+
 
 /* drifting aurora blobs */
 .qh-page::before,
