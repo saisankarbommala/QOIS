@@ -541,8 +541,8 @@ const handleOtpKeyDown = (e, index) => {
 
 
         <div className="auth-card">
-          <h1 className="auth-title">Welcome Back</h1>
-          <p className="auth-sub">Manage your digital farm.</p>
+          <h1 className="auth-title">Quantum System Access</h1>
+          <p className="auth-sub">Secure gateway to our quantum execution environment.</p>
 
           <div className="auth-tabs">
             <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>Login</button>
