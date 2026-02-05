@@ -102,8 +102,9 @@ html, body {
   background: radial-gradient(circle, rgba(56,189,248,0.7), transparent 70%);
 }
 .qh-page::after {
-  bottom: -180px;
-  right: -140px;
+  position: absolute; /* fixed nundi absolute ki marchandi */
+  bottom: 0; /* -180px badulu 0 pettandi */
+  right: 0;
   background: radial-gradient(circle, rgba(168,85,247,0.8), transparent 70%);
 }
 .copyright {
