@@ -934,14 +934,6 @@ text-align:center;
   }
 }
 
-@media (max-width: 768px) {
-  .qjs-page {
-    padding: 22px 18px 30px;
-  }
-  .qjs-stepper {
-    flex-direction: column;
-  }
-}
   /* ==============================
    PERFECT MOBILE VERSION V2
 ============================== */
@@ -952,6 +944,12 @@ text-align:center;
 *{
   box-sizing:border-box;
 }
+  .qjs-page {
+    padding: 22px 18px 30px;
+  }
+  .qjs-stepper {
+    flex-direction: column;
+  }
 
 body{
   overflow-x:hidden;
