@@ -848,10 +848,19 @@ html, body{
   
 
   /* Titles */
-  .qh-title{
-    font-size:22px;
-    letter-spacing:0.12em;
+ .qd-header {
+    margin-bottom: 28px;
   }
+
+  .qd-title-main {
+    font-size: 2.1rem;          /* 33–34px */
+    letter-spacing: 0.18em;
+    animation: none;            /* typing animation usually looks bad on mobile */
+    border-right: none;         /* remove caret */
+    white-space: normal;
+    text-align: center;
+  }
+
 
   .qh-subtitle{
     font-size:11px;
