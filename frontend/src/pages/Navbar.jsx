@@ -79,7 +79,7 @@ export default function Navbar() {
             </defs>
           </svg>
         </div>
-        <span className="logo-text">QOP's<span className="logo-accent">-System</span></span>
+        <span className="logo-text">QOI<span className="logo-accent">-System</span></span>
       </div>
 
       {/* Toggle */}
