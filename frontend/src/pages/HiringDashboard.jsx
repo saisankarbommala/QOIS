@@ -41,13 +41,6 @@ const API_BASE_URL = "https://qois.onrender.com/api";
    (same as your original, with a few small additions)
 ========================================================= */
 const styles = `
-html, body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  background: black;
-  height: 100%; /* Root height fixed */
-}
 :root {
   --qh-bg-1: #020018;
   --qh-bg-2: #03001f;
@@ -65,23 +58,46 @@ html, body {
   --qh-accent-gold: #eab308;
   --qh-accent-red: #ef4444;
 }
+html, body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+@media (max-width:768px){
+
+  .qh-page{
+    padding:16px 12px 40px;
+  }
+
+  .qh-stats-grid,
+  .qh-filters-row,
+  .qh-analytics-grid,
+  .qh-analytics-bottom{
+    grid-template-columns:1fr !important;
+  }
+
+  .qh-btn{
+    width:100%;
+  }
+
+  .qh-table-wrapper{
+    width:100%;
+    overflow-x:auto;
+  }
+
+}
 
 /* PAGE BACKGROUND + ANIMATED GRID */
-/* PAGE BACKGROUND + ANIMATED GRID */
-.qh-page {min-height: auto; 
- min-height: 100vh; /* Background full screen undalante deenni 100vh unchi... */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Content ni top ki push chesthundi */
-  padding: 26px 34px 20px;
-  background: black;
-  color: #e5e7ff;
+.qh-page {
+   min-height: calc(100vh - 16px);
+   padding: 26px 34px 1px;
+  background:
+    black;
+  color: var(--qh-text-main);
   font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
   overflow-x: hidden;
-  box-sizing: border-box;
 }
-
 
 /* drifting aurora blobs */
 .qh-page::before,
@@ -102,23 +118,11 @@ html, body {
   background: radial-gradient(circle, rgba(56,189,248,0.7), transparent 70%);
 }
 .qh-page::after {
-  position: absolute; /* fixed nundi absolute ki marchandi */
-  bottom: 0; /* -180px badulu 0 pettandi */
-  right: 0;
+  bottom: -10px;
+  right: -140px;
   background: radial-gradient(circle, rgba(168,85,247,0.8), transparent 70%);
 }
-.copyright {
-    /* Updated copyright style for better dark theme integration */
-    background: #08001F; /* Very dark background */
-    width: 100%;
-    max-width: 100vw;
-    text-align: center;
-    padding: 20px 0; 
-    border-top: 1px solid rgba(148,163,255,0.1);
-    font-size: 12px; 
-    color: #9ca3af; /* Soft gray text */
-    margin-top: 30px; /* Space from content */
-}
+
 /* subtle moving grid */
 .qh-grid-bg {
   position: fixed;
@@ -240,40 +244,62 @@ html, body {
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .qh-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: conic-gradient(
-    from 210deg,
-    rgba(56,189,248,0.0),
-    rgba(56,189,248,0.45),
-    rgba(168,85,247,0.4),
-    rgba(236,72,153,0.0)
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:inherit;
+  padding:1.5px;
+
+  background:linear-gradient(
+    120deg,
+    #0ea5e9,  /* cyan */
+    #6366f1,  /* indigo */
+    #8b5cf6,  /* violet */
+    #0ea5e9
   );
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: -1;
+
+  background-size:300% 300%;
+  animation:borderMove 6s linear infinite;
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+
+  opacity:.7; /* subtle border glow */
+  pointer-events:none;
 }
 .qh-card:hover::before {
   opacity: 0.16;
 }
 .qh-card:hover {
-  transform: translateY(-3px) scale(1.005);
-  box-shadow:
-    0 0 0 1px rgba(129,140,248,0.95),
-    0 36px 90px rgba(15,23,42,1);
-  border-color: rgba(191,219,254,0.7);
-}
-.qd-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  z-index: 3;
-}
+   transform: translateY(-4px) scale(1.01);
 
-/* 🧬 QUANTUM NEON HEADER BAR */
-.qd-card-header-bar {
+  box-shadow:
+    0 0 15px rgba(139,92,246,.3),
+    0 0 25px rgba(6,182,212,.25),
+    0 10px 25px rgba(0,0,0,0.5);
+}
+    @keyframes borderMove {
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
+  
+/* 🔁 BORDER ANIMATION */
+@keyframes borderMove {
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
+}
+.qh-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+  .qh-card-header-bar {
   margin: -18px -20px 18px;
   padding: 16px 22px;
   position: relative;
@@ -298,15 +324,36 @@ html, body {
     inset 0 -1px 12px rgba(139,92,246,0.22),
     0 10px 30px rgba(0,0,0,0.45);
 }
-.qh-card-title {
-  font-size: 18px;
-  font-weight: 600;
-}
-.qh-card-sub {
+/* 🧾 SUBTITLE — COOL CYAN TONE */
+.qh-card-header-bar .qh-card-sub {
   font-size: 12px;
-  color: var(--qh-text-sub);
-  margin-top: 2px;
+  margin-top: 4px;
+  color: #bdf3ff;
+  opacity: 0.95;
+
+  text-shadow:
+    0 0 8px rgba(0,240,255,0.45),
+    0 0 14px rgba(139,92,246,0.3);
 }
+/* 🔁 ANIMATIONS */
+@keyframes quantumFlow {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
+}
+
+@keyframes borderSlide {
+  0% {background-position:0% 50%}
+  50% {background-position:100% 50%}
+  100% {background-position:0% 50%}
+}
+
+@keyframes lightSweep {
+  0% {transform: translateX(-100%)}
+  50% {transform: translateX(100%)}
+  100% {transform: translateX(100%)}
+}
+
 /* STATS OVERVIEW */
 .qh-stats-grid {
   display: grid;
@@ -422,6 +469,9 @@ html, body {
 .qh-section {
   margin-bottom: 28px;
 }
+  .qh-section:last-child {
+  margin-bottom: 0;
+}
 .qh-section-header {
   display: flex;
   align-items: center;
@@ -436,8 +486,8 @@ html, body {
 /* FILTERS + TABLE */
 .qh-filters-row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0,1fr)) 240px;
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0,1fr)) 5px;
+  gap: 15px;
   margin-bottom: 14px;
   align-items: center;
 }
@@ -450,7 +500,7 @@ html, body {
 .qh-select {
   margin-top: 4px;
   padding: 7px 10px;
-  border-radius: 999px;
+  border-radius: 35px;
   border: 1px solid rgba(148,163,255,0.75);
   background: radial-gradient(circle at top, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
   color: var(--qh-text-main);
@@ -460,11 +510,50 @@ html, body {
 .qh-input::placeholder {
   color: #64748b;
 }
+  .qh-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: rgba(15,23,42,0.98);
+  color: #e5e7eb;
+
+  /* WHITE ARROW */
+  background-image:
+    linear-gradient(45deg, transparent 50%, #ffffff 50%),
+    linear-gradient(135deg, #ffffff 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 55%,
+    calc(100% - 14px) 55%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+
+  padding-right: 44px; /* arrow space */
+}
+
+/* Optional: focus glow maintain */
+.qh-select:focus {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #ffffff 50%),
+    linear-gradient(135deg, #ffffff 50%, transparent 50%);
+}
+
 .qh-input:focus,
 .qh-select:focus {
   box-shadow: 0 0 0 1px rgba(191,219,254,0.9), 0 0 18px rgba(59,130,246,0.9);
 }
-
+.copyright {
+    /* Updated copyright style for better dark theme integration */
+    background: #08001F; /* Very dark background */
+    width: 100%;
+    max-width: 100vw;
+    text-align: center;
+    padding: 20px 0; 
+    border-top: 1px solid rgba(148,163,255,0.1);
+    font-size: 12px; 
+    color: #9ca3af; /* Soft gray text */
+    margin-top: 30px; /* Space from content */
+}
 .qh-slider-wrap {
   display: flex;
   flex-direction: column;
@@ -573,7 +662,7 @@ html, body {
 /* BUTTONS */
 .qh-btn {
   border-radius: 999px;
-  padding: 7px 15px;
+  padding: 7px 75px;
   border: 1px solid rgba(129,140,248,0.9);
   background: radial-gradient(circle at top, rgba(59,130,246,0.8), rgba(15,23,42,0.98));
   color: #e5e7ff;
@@ -638,12 +727,84 @@ html, body {
   grid-template-columns: 1.1fr 1.9fr;
   gap: 18px;
 }
+  .qh-card-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
 
+.qd-ai-pill {
+  position: absolute;
+  top: 0;
+  right: 18px; 
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: radial-gradient(circle at left, #22c55e44, transparent);
+  border: 1px solid rgba(34,197,94,0.7);
+  color: #bbf7d0;
+  animation: aiPulse 1.8s infinite ease-in-out;
+}
+
+.qd-ai-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+}
+
+@keyframes aiPulse {
+  0%,100% { transform: translateY(0); opacity:0.8; }
+  50% { transform: translateY(-2px); opacity:1; }
+}
+  .qh-stats-grid:last-child {
+  margin-bottom: 0;
+}
+
+
+.qh-card-header-bar .qh-card-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+
+  background: linear-gradient(
+    90deg,
+    #00f0ff,
+    #8b5cf6,
+    #ff2fd3,
+    #00f0ff
+  );
+  background-size: 200% auto;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: titleShimmer 6s linear infinite;
+}
+  
+  /* 🔁 ANIMATION */
+@keyframes borderRotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+  
+  .qh-card-title {
+    font-size: 16px;
+  }
 /* RESPONSIVE */
 @media (max-width: 1280px) {
   .qh-stats-grid {
     grid-template-columns: repeat(3,minmax(0,1fr));
   }
+    
   .qh-analytics-grid {
     grid-template-columns: repeat(2,minmax(0,1fr));
   }
@@ -679,108 +840,125 @@ html, body {
   .qh-filters-row {
     grid-template-columns: 1fr;
   }
-}
-  /* ============================================================
-   MOBILE-OPTIMIZED STYLES (Focus: Clean Stacking & Touch)
-   ============================================================ */
+    /* ================= MOBILE OPTIMIZATION ================= */
 
+/* Small tablets & large phones */
 @media (max-width: 768px) {
-  /* 1. Base Layout Adjustments */
-  .qh-page {
-    padding: 16px 14px; /* Tightened spacing for smaller screens */
-    overflow-x: hidden;
+
+  
+
+  /* Titles */
+ .qd-header {
+    margin-bottom: 28px;
   }
 
-  /* 2. Typography Scaling */
-  .qh-title {
-    font-size: 24px !important; /* Scaled down for mobile */
-    letter-spacing: 0.12em !important;
+  .qd-title-main {
+    font-size: 2.1rem;          /* 33–34px */
+    letter-spacing: 0.18em;
+    animation: none;            /* typing animation usually looks bad on mobile */
+    border-right: none;         /* remove caret */
+    white-space: normal;
     text-align: center;
   }
 
-  .qh-subtitle {
-    font-size: 11px !important;
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 0 5px;
+
+  .qh-subtitle{
+    font-size:11px;
+    line-height:1.4;
+    margin-bottom:18px;
   }
 
-  /* 3. Stats Grid - Single Column */
-  .qh-stats-grid {
-    grid-template-columns: 1fr !important; /* Stack cards vertically */
-    gap: 12px;
+  /* Cards */
+  .qh-card{
+    padding:14px;
+    border-radius:14px;
   }
 
-  .qh-stat-value {
-    font-size: 28px !important; /* Prevent text overflow */
+  .qh-card-header-bar{
+    padding:12px 14px;
   }
 
-  /* 4. Filters & Inputs */
-  .qh-filters-row {
-    grid-template-columns: 1fr !important; /* Every filter gets its own row */
-    gap: 12px;
+  .qh-card-title{
+    font-size:14px;
   }
 
-  .qh-filters-row > div:last-child {
-    width: 100% !important; /* Search bar fills width */
+  
+
+  .qh-stat-value{
+    font-size:24px;
   }
 
-  .qh-input, .qh-select {
-    height: 44px; /* Minimum touch target for fingers */
-    font-size: 14px; /* Prevents iOS zoom-on-focus */
+  /* Filters stack */
+  .qh-filters-row{
+    grid-template-columns:1fr;
+    gap:10px;
   }
 
-  /* 5. Table Responsiveness */
-  .qh-table-wrapper {
-    margin: 0 -4px; /* Full-bleed feel */
-    border-radius: 12px;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+  /* Inputs */
+  .qh-input,
+  .qh-select{
+    font-size:13px;
+    padding:10px 12px;
   }
 
-  .qh-table th, .qh-table td {
-    padding: 12px 10px; /* Better spacing for tapping */
-    font-size: 11px;
+  /* Buttons */
+  .qh-btn{
+    width:100%;
+    justify-content:center;
+    padding:10px;
   }
 
-  /* 6. Layout Grids (Analytics/Sections) */
-  .qh-analytics-grid, 
-  .qh-analytics-bottom, 
-  .qh-grid-2 {
-    grid-template-columns: 1fr !important; /* Force single column */
-    gap: 16px;
+  /* Tables scroll */
+  .qh-table-wrapper{
+    border-radius:12px;
   }
 
-  /* 7. Card & Header Adjustments */
-  .qd-card-header-bar {
-    padding: 12px 16px;
+  .qh-table th,
+  .qh-table td{
+    font-size:11px;
+    padding:8px;
   }
 
-  .qh-card-title {
-    font-size: 16px;
+  /
+  /* Live feed */
+  .qh-feed-list{
+    max-height:180px;
   }
 
-  /* 8. Buttons */
-  .qh-btn {
-    width: 100%; /* Full-width buttons are easier to click on mobile */
-    justify-content: center;
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  /* 9. Aurora Blobs Scaling */
-  .qh-page::before, .qh-page::after {
-    width: 280px; /* Smaller blobs for mobile */
-    height: 280px;
-    filter: blur(60px);
-  }
 }
 
-/* Horizontal Scrollbar for Tables on Mobile */
-.qh-table-wrapper::-webkit-scrollbar {
-  height: 3px;
+/* Extra small phones */
+@media (max-width: 480px){
+
+  .qh-title{
+    font-size:18px;
+  }
+
+  .qh-subtitle{
+    font-size:10px;
+  }
+
+  .qh-live-pill{
+    font-size:10px;
+    padding:5px 10px;
+  }
+
+  .qh-card{
+    padding:12px;
+  }
+
+  .qh-stat-value{
+    font-size:20px;
+  }
+
+
+  .copyright{
+    font-size:10px;
+    padding:14px 0;
+  }
+
 }
-.qh-table-wrapper::-webkit-scrollbar-thumb {
-  background: var(--qh-accent-purple);
+
 }
 `;
 
