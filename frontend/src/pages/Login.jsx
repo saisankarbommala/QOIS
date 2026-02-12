@@ -519,10 +519,18 @@ export default function Login() {
           <video autoPlay muted loop className="auth-video">
             <source src={loginVideo} type="video/mp4" />
           </video>
+          <div className="visual-overlay" />
+  <div className="auth-content">
+    <div className="auth-brand">QEE</div>
+    <div className="auth-quote">QUANTUM  EXECUTION <span> ENGINE</span></div>
+  </div>
+
         </div>
 
         <div className="auth-card">
-          <h1 className="auth-title">Welcome Back</h1>
+          <h1 className="auth-title">Quantum System Access</h1>
+          <p className="auth-sub">Secure gateway to our quantum execution environment.</p>
+
 
           {/* Tabs: Hide OTP tab in Production */}
           <div className="auth-tabs">
