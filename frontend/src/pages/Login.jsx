@@ -535,7 +535,7 @@ export default function Login() {
           {/* Tabs: Hide OTP tab in Production */}
           <div className="auth-tabs">
             <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>
-              Password
+              SECURE AUTHENTICATION
             </button>
             {!isProduction && (
               <button className={`auth-tab ${mode === "otp" ? "active" : ""}`} onClick={() => setMode("otp")}>
