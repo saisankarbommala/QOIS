@@ -528,14 +528,14 @@ export default function Login() {
         </div>
 
         <div className="auth-card">
-          <h1 className="auth-title">Quantum System Access</h1>
+          <h1 className="auth-title">Quantum Execution Control Portal</h1>
           <p className="auth-sub">Secure gateway to our quantum execution environment.</p>
 
 
           {/* Tabs: Hide OTP tab in Production */}
           <div className="auth-tabs">
             <button className={`auth-tab ${mode === "password" ? "active" : ""}`} onClick={() => { setMode("password"); setOtpSent(false); }}>
-              SECURE AUTHENTICATION
+              Quantum Authentication Gateway
             </button>
             {!isProduction && (
               <button className={`auth-tab ${mode === "otp" ? "active" : ""}`} onClick={() => setMode("otp")}>
