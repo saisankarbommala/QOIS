@@ -528,7 +528,7 @@ export default function Login() {
         </div>
 
         <div className="auth-card">
-          <h1 className="auth-title">Quantum Execution Control Portal</h1>
+          <h1 className="auth-title">Quantum Control Portal</h1>
           <p className="auth-sub">Secure gateway to our quantum execution environment.</p>
 
 
