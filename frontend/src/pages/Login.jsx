@@ -454,6 +454,115 @@ const styles = `
 
 .google-btn { background: #ffffff !important; color: #1f2937 !important; padding: 8px !important; }
 
+/* =========================
+   📱 MOBILE ONLY VIEW
+   ========================= */
+
+@media (max-width: 768px) {
+
+  /* Make page scrollable for mobile keyboards */
+  .auth-page {
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 20px 0;
+  }
+
+  /* Remove big blobs (performance + space) */
+  .blob {
+    display: none;
+  }
+
+  /* Full width wrapper */
+  .auth-wrapper {
+    width: 92%;
+    height: auto;
+    margin-top: 20px;
+    grid-template-columns: 1fr; /* Single column */
+    border-radius: 24px;
+  }
+
+  /* Hide left visual/video panel */
+  .auth-visual {
+    display: none;
+  }
+
+  /* Mobile card */
+  .auth-card {
+    padding: 30px 22px;
+    border-radius: 24px;
+  }
+
+  /* Text sizes */
+  .auth-title {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .auth-sub {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  /* Tabs */
+  .auth-tabs {
+    margin-bottom: 20px;
+  }
+
+  .auth-tab {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  /* Input fields */
+  .auth-field {
+    padding: 14px 16px;
+    border-radius: 10px;
+  }
+
+  .auth-field input {
+    font-size: 15px;
+  }
+
+  /* Button */
+  .auth-btn {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  /* Divider */
+  .google-divider {
+    font-size: 10px;
+  }
+
+}
+
+
+/* =========================
+   🚫 BLOCK DESKTOP VIEW
+   (Optional - remove if not needed)
+   ========================= */
+
+@media (min-width: 769px) {
+
+  .auth-page::after {
+    content: "Please open this page on mobile device 📱";
+    position: fixed;
+    inset: 0;
+    background: #020617;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    z-index: 9999;
+    text-align: center;
+    padding: 20px;
+  }
+
+}
+
 
 `;
 
@@ -566,7 +675,7 @@ export default function Login() {
               )}
             </AnimatePresence>
 
-            {error && <p style={{ color: "red", fontSize: 13 }}>{error}</p>}
+            {error && <p style={{ color: "red", fontSize: 13 }}>{error}</p>} 
 
             <button className="auth-btn" disabled={loading}>
               {loading ? <Loader2 className="animate-spin" /> : 
