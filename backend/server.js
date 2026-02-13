@@ -45,6 +45,7 @@ const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:4173',
     'https://qops.netlify.app',
+    'https://qois.in',
     process.env.FRONTEND_URL
 ];
 
