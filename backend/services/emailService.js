@@ -9,17 +9,15 @@ import crypto from 'crypto';
 // 🛠️ CLOUD-PRODUCTION TRANSPORTER
 // --------------------------------------------------------
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',        // ✅ Clean string
-    port: 465,
-    secure: true,                  // ✅ Must be true for port 465
-    pool: true,
+    host: 'smtp.gmail.com',   // ✅ clean string
+    port: 587,                // ✅ try 587 instead of 465
+    secure: false,            // false for 587 (STARTTLS)
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
     tls: {
-        rejectUnauthorized: false,
-        servername: 'smtp.gmail.com'  // ✅ Clean string
+        rejectUnauthorized: false
     },
     connectionTimeout: 60000,
     greetingTimeout: 30000,
