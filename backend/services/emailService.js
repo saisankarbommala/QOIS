@@ -9,19 +9,19 @@ import crypto from 'crypto';
 // 🛠️ CLOUD-PRODUCTION TRANSPORTER
 // --------------------------------------------------------
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465, // Using SSL port 465 is the most reliable for Render
-    secure: false, 
-    pool: true,   // Keeps the connection open to avoid repeated handshakes
+    host: 'smtp.gmail.com',        // ✅ Clean string
+    port: 465,
+    secure: true,                  // ✅ Must be true for port 465
+    pool: true,
     auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS, // 16-character App Password
+        pass: process.env.SMTP_PASS,
     },
     tls: {
         rejectUnauthorized: false,
-        servername: 'smtp.gmail.com' // Forces the handshake to match the host
+        servername: 'smtp.gmail.com'  // ✅ Clean string
     },
-    connectionTimeout: 60000, // 60s to allow for cloud latency
+    connectionTimeout: 60000,
     greetingTimeout: 30000,
     socketTimeout: 60000
 });
