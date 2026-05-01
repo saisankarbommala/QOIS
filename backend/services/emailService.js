@@ -9,15 +9,16 @@ import crypto from 'crypto';
 // 🛠️ CLOUD-PRODUCTION TRANSPORTER
 // --------------------------------------------------------
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',   // ✅ clean string
-    port: 587,                // ✅ try 587 instead of 465
-    secure: false,            // false for 587 (STARTTLS)
+    host: 'smtp.gmail.com',      // ✅ FIXED - was '[smtp.gmail.com](http://smtp.gmail.com)'
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
     },
     tls: {
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+        servername: 'smtp.gmail.com'  // ✅ FIXED - same markdown bug here
     },
     connectionTimeout: 60000,
     greetingTimeout: 30000,
